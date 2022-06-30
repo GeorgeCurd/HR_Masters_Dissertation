@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
 def drop_cols(data):
     dropped = data.drop(
         ['Meeting', 'Time', 'Title', 'Horse', 'CardNumber', 'StallNumber', 'StallPercentage', 'Weight_StonesPounds',
@@ -19,11 +18,12 @@ def drop_cols(data):
     return dropped
 
 
-def update_missing_vals()
+def update_missing_vals(df,col,val):
+    df.
 
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB2.csv'
 df = pd.read_csv(filename)
 df = drop_cols(df)
 print(df['Position5RunsAgo'].unique())
-# a = df.isna().sum()
+a = df.isna().sum()
 # a.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/missing_vals.csv')
