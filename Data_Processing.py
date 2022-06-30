@@ -1,29 +1,43 @@
 import pandas as pd
 import numpy as np
-
-def drop_cols(data):
-    dropped = data.drop(
-        ['Meeting', 'Time', 'Title', 'Horse', 'CardNumber', 'StallNumber', 'StallPercentage', 'Weight_StonesPounds',
-         'Jockey', 'Trainer', 'Alarms', 'ClassPosition', 'WinClassProbability', 'WinClassProbability_Normalised',
-         'ValueOdds', 'ForecastSP', 'CSVversion', 'Date', 'ElapsedDays', 'Systems', 'Time24Hour', 'BST_GMT',
-         'HorseForm', 'ConnRanking', 'FrmRanking', 'LstRanking', 'ClsRanking', 'WinFRanking', 'SpdRanking', 'HCPRanking',
-         'Country', 'RGoingRanking', 'RDistanceRanking', 'UKHRCardHorseID', 'UKHRCardTrainerID', 'UKHRCardJockeyID',
-         'UKHRCardCourseID', 'Sire', 'UKHR_SireID', 'Dam', 'UKHR_DamID', 'Betfair Placed', 'Betfair Place S.P.', 'Betfair Win S.P.',
-         'Actual Going', 'S.P.', 'Actual Runners', 'WRITE_IN_DURATION_HERE', 'UKHR_RaceID', 'UKHR_EntryID', 'UKHR_HorseID',
-         'UKHR_TrainerID', 'UKHR_JockeyID', 'UKHR_CourseID', 'LengthsBehind', 'LengthsBehindTotal', 'Duration',
-         'WRITE_FAVOURITE_RANKING', 'Claiming', 'Selling', 'Auction', 'HunterChase', 'Beginner', 'LengthsWonLost5RunsAgo', 'BHAclassLastType',
-         'LengthsWonLost4RunsAgo', 'BHAclassLast', 'LengthsWonLost3RunsAgo', 'BHAclassToday', 'Going5RunsAgo',
-         'LengthsWonLost2RunsAgo', 'Going4RunsAgo', 'Going3RunsAgo', 'LastTimePositionRaceType', 'LengthsWonLostLastRun', 'Going2RunsAgo', 'GoingLastTime', ]
-        , axis=1)
-    return dropped
+import naming as nm
 
 
-def update_missing_vals(df,col,val):
-    df.
+def check_missing_vals(df):
+    missing = df.isna().sum()
+    return missing
+
+
+def transform_data(df):
+    # Drop cols that aren't to be used for modelling
+    df.drop(nm.cols_to_delete, axis=1,inplace=True)
+
+    # Update Missing Vals
+    for i in range(0, len(nm.mv_cols)):
+        df[nm.mv_cols[i]].replace([np.nan], nm.mv_update_vals[i], inplace=True)
+
+    # Encode categorical (nominal) cols as OHE variables
+    df= pd.get_dummies(df,prefix=nm.nominal_cols, columns=nm.nominal_cols, drop_first=False,dtype='int64')
+
+    # Update string values for ordinal cols (e.g. cols for previous race positions)
+    for i in range(0, len(nm.ordinal_cols)):
+        df.replace({nm.ordinal_cols[i]: nm.ordinal_vals}, inplace=True)
+
+    # Create binary results column
+    df["result_bin"] = np.where(df["Result"] == '1', 1, 0)
+    df.drop(columns=["Result"], inplace=True)
+
+    # Convert ordinal categorical cols into numeric
+    for i in range(0, len(nm.ordinal_cols)):
+        df[nm.ordinal_cols[i]] = df[nm.ordinal_cols[i]] .astype('int64')
+
+    return df
+
 
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB2.csv'
-df = pd.read_csv(filename)
-df = drop_cols(df)
-print(df['Position5RunsAgo'].unique())
-a = df.isna().sum()
-# a.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/missing_vals.csv')
+hr_data = pd.read_csv(filename)
+hr_data = transform_data(hr_data)
+# print(hr_data['Position5RunsAgo'].unique())
+# dtype = hr_data.dtypes
+# dtype.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/dtypes.csv')
+
