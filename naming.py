@@ -4,7 +4,7 @@ cols_to_delete = ['Meeting', 'Time', 'Title', 'Horse', 'CardNumber', 'StallNumbe
          'HorseForm', 'ConnRanking', 'FrmRanking', 'LstRanking', 'ClsRanking', 'WinFRanking', 'SpdRanking', 'HCPRanking',
          'Country', 'RGoingRanking', 'RDistanceRanking', 'UKHRCardHorseID', 'UKHRCardTrainerID', 'UKHRCardJockeyID',
          'UKHRCardCourseID', 'Sire', 'UKHR_SireID', 'Dam', 'UKHR_DamID', 'Betfair Placed', 'Betfair Place S.P.', 'Betfair Win S.P.',
-         'Actual Going', 'S.P.', 'Actual Runners', 'WRITE_IN_DURATION_HERE', 'UKHR_RaceID', 'UKHR_EntryID', 'UKHR_HorseID',
+         'Actual Going', 'S.P.', 'Actual Runners', 'WRITE_IN_DURATION_HERE', 'UKHRCardRaceID', 'UKHR_EntryID', 'UKHR_HorseID',
          'UKHR_TrainerID', 'UKHR_JockeyID', 'UKHR_CourseID', 'LengthsBehind', 'LengthsBehindTotal', 'Duration',
          'WRITE_FAVOURITE_RANKING', 'Claiming', 'Selling', 'Auction', 'HunterChase', 'Beginner', 'LengthsWonLost5RunsAgo', 'BHAclassLastType',
          'LengthsWonLost4RunsAgo', 'BHAclassLast', 'LengthsWonLost3RunsAgo', 'BHAclassToday',
@@ -30,5 +30,5 @@ race_cols = ['RaceClass', 'Furlongs', 'Prize', 'MinAge', 'MaxAge', 'MeanWeight',
              'Going_SFT-HVY', 'Going_SOFT', 'Going_Unknown', 'Going_YIELD', 'Going_YLD-SFT', 'Handicap_Handicap', 'Handicap_Non Handicap',
              'Handicap_Nursery', 'Novice_Non Novice', 'Novice_Novice', 'Maiden_Maiden', 'Maiden_Non Maiden']
 
-joining_col = ['UKHRCardRaceID']
+joining_col = ['UKHR_RaceID']
 

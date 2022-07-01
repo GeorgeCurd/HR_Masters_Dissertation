@@ -39,7 +39,7 @@ def create_race_data(df):
     df_race2 = df[nm.race_cols]
     frames = [df_race, df_race2]
     df_race_merge = pd.concat(frames, axis=1)
-
+    df_race_merge.drop_duplicates(inplace=True)
     return df_race_merge
 
 
@@ -48,6 +48,8 @@ def create_horse_data(df):
     first_column = df_horse.pop(nm.joining_col[0])
     df_horse.insert(0, nm.joining_col[0], first_column)
     return df_horse
+
+#def one_row_per_race(df):
 
 
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB2.csv'
@@ -64,3 +66,5 @@ hr_horse_data = create_horse_data(hr_data)
 # a = list(hr_data.columns)
 # a= pd.Series(a)
 # a.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/new_cols.csv')
+a = hr_race_data['UKHR_RaceID'].value_counts()
+a.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/UKHRRaceID_counts.csv')
