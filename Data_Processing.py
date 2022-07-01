@@ -34,10 +34,33 @@ def transform_data(df):
     return df
 
 
+def create_race_data(df):
+    df_race = df[nm.joining_col]
+    df_race2 = df[nm.race_cols]
+    frames = [df_race, df_race2]
+    df_race_merge = pd.concat(frames, axis=1)
+
+    return df_race_merge
+
+
+def create_horse_data(df):
+    df_horse = df.drop(nm.race_cols, axis=1, inplace=False)
+    first_column = df_horse.pop(nm.joining_col[0])
+    df_horse.insert(0, nm.joining_col[0], first_column)
+    return df_horse
+
+
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB2.csv'
 hr_data = pd.read_csv(filename)
 hr_data = transform_data(hr_data)
+hr_race_data = create_race_data(hr_data)
+hr_horse_data = create_horse_data(hr_data)
+
+
+
 # print(hr_data['Position5RunsAgo'].unique())
 # dtype = hr_data.dtypes
 # dtype.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/dtypes.csv')
-
+# a = list(hr_data.columns)
+# a= pd.Series(a)
+# a.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/new_cols.csv')
