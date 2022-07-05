@@ -1,4 +1,4 @@
-cols_to_delete = ['Meeting', 'Time', 'Title', 'Horse', 'CardNumber', 'StallNumber', 'StallPercentage', 'Weight_StonesPounds',
+cols_to_delete = ['Meeting', 'Time', 'Title', 'CardNumber', 'StallNumber', 'StallPercentage', 'Weight_StonesPounds',
          'Jockey', 'Trainer', 'Alarms', 'ClassPosition', 'WinClassProbability', 'WinClassProbability_Normalised',
          'ValueOdds', 'ForecastSP', 'CSVversion', 'Date', 'ElapsedDays', 'Systems', 'Time24Hour', 'BST_GMT',
          'HorseForm', 'ConnRanking', 'FrmRanking', 'LstRanking', 'ClsRanking', 'WinFRanking', 'SpdRanking', 'HCPRanking',
@@ -32,3 +32,4 @@ race_cols = ['RaceClass', 'Furlongs', 'Prize', 'MinAge', 'MaxAge', 'MeanWeight',
 
 joining_col = ['UKHR_RaceID']
 
+ident_col = ['Horse']
