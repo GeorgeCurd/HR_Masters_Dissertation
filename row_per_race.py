@@ -23,8 +23,10 @@ class RowPerRaceTransformer:
     def transform_full_dataframe(self):
         df_transformed = self.df.groupby('UKHR_RaceID').apply(
             self.transform_race_to_row)
-        df_transformed.columns = self.new_colnames + ['result_bin']
+        df_transformed.columns = self.new_colnames
         df_transformed = df_transformed.reset_index().drop(['level_1'], axis=1)
+        df_transformed = self.move_result_cols(df_transformed)
+        df_transformed = self.move_horse_cols(df_transformed)
         return df_transformed
 
     def transform_race_to_row(self, df_race, winning_label='1'):
@@ -36,7 +38,7 @@ class RowPerRaceTransformer:
         race_info = df_race.iloc[0][self.race_colnames].tolist()
         horses_info = list(df_race[self.horse_colnames].values.flatten())
         padding = np.full([1, (self.max_n_horses - n_horses) *
-                           len(self.horse_colnames)], np.nan).tolist()[0]
+                           len(self.horse_colnames)], 0).tolist()[0]
 
         full_info = []
         full_info.extend(race_info)
@@ -44,8 +46,7 @@ class RowPerRaceTransformer:
         full_info.extend(padding)
 
         race_row = pd.DataFrame(full_info).transpose()
-        race_row['result_bin'] = self.create_result_label(df_race,
-                                                      winning_label=winning_label)
+        # race_row['result_bin'] = self.create_result_label(df_race, winning_label=winning_label)
 
         return race_row
 
@@ -61,6 +62,19 @@ class RowPerRaceTransformer:
         return ['{}_{}'.format(horse_info, suffix) for suffix in self.suffixes
                 for horse_info in self.horse_colnames]
 
+    def move_result_cols(self, df):
+        for i in range(1, self.max_n_horses+1):
+            last_column = df.pop('result_bin_' + str(i))
+            a = len(df.columns)
+            df.insert(a, 'result_bin_' + str(i), last_column)
+        return df
+
+    def move_horse_cols(self, df):
+        for i in range(1, self.max_n_horses+1):
+            last_column = df.pop('Horse_' + str(i))
+            a = len(df.columns)
+            df.insert(a, 'Horse_' + str(i), last_column)
+        return df
 
 a =RowPerRaceTransformer(dp.hr_data,14)
 print('started')

@@ -52,28 +52,15 @@ def create_horse_data(df):
     return df_horse
 
 
-def create_index_col(df):
-    for i in range(len(df.UKHR_RaceID)):
-        df2 = df.assign(
-            code=df.index.to_series().groupby(
-                [df.Horse]
-            ).transform('first').map('CODE{}'.format)
-        )[['code'] + df.columns.tolist()]
-    return df2
-
-# def one_row_per_race(df):
-#     df2 = df.pivot(index='idx', columns='UKHR_RaceID', values=df.columns[2:])
-#     return df2
-
 
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB2.csv'
 hr_data = pd.read_csv(filename)
 hr_data = transform_data(hr_data)
 hr_data_extract = hr_data.iloc[0:100, :]
-hr_race_data = create_race_data(hr_data)
-hr_horse_data = create_horse_data(hr_data)
-hr_horse_extract = hr_horse_data.iloc[0:10, 0:10]
-test = create_index_col(hr_horse_extract)
+# hr_race_data = create_race_data(hr_data)
+# hr_horse_data = create_horse_data(hr_data)
+# hr_horse_extract = hr_horse_data.iloc[0:10, 0:10]
+# test = create_index_col(hr_horse_extract)
 
 
 # test = one_row_per_race(hr_horse_extract)
