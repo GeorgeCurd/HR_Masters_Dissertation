@@ -76,9 +76,10 @@ class RowPerRaceTransformer:
             df.insert(a, 'Horse_' + str(i), last_column)
         return df
 
-a =RowPerRaceTransformer(dp.hr_data,14)
+a = RowPerRaceTransformer(dp.hr_data_extract,14)
 print('started')
-b=a.transform_full_dataframe()
+b = a.transform_full_dataframe()
 print('completed')
-b.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/race_to_row.csv')
-print('Exported')
+c = b.dtypes
+c.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/rtr_dtypes.csv')
+# print('Exported')

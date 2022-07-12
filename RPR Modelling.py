@@ -42,6 +42,7 @@ X_test.set_axis(X_names, axis=1, inplace=True)
 y_train.set_axis(y_names, axis=1, inplace=True)
 y_train.set_axis(y_names, axis=1, inplace=True)
 
+
 a = len(X.columns)
 # Create Model
 model = Sequential()
@@ -59,7 +60,7 @@ print(model.summary())
 
 
 # fit the model
-hist = model.fit(X_train, y_train, epochs=10, batch_size=50,  validation_split=0.20)
+hist = model.fit(X_train, y_train, epochs=10, batch_size=50, shuffle=False)
 
 # evaluate the model
 scores = model.evaluate(X_test, y_test)

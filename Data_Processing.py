@@ -57,8 +57,8 @@ filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB2.csv'
 hr_data = pd.read_csv(filename)
 hr_data = transform_data(hr_data)
 hr_data_extract = hr_data.iloc[0:100, :]
-# hr_race_data = create_race_data(hr_data)
-# hr_horse_data = create_horse_data(hr_data)
+hr_race_data = create_race_data(hr_data)
+hr_horse_data = create_horse_data(hr_data)
 # hr_horse_extract = hr_horse_data.iloc[0:10, 0:10]
 # test = create_index_col(hr_horse_extract)
 
