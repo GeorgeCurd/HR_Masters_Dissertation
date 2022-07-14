@@ -81,5 +81,5 @@ print('started')
 b = a.transform_full_dataframe()
 print('completed')
 c = b.dtypes
-c.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/rtr_dtypes.csv')
+#c.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/rtr_dtypes.csv')
 # print('Exported')

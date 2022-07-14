@@ -1,11 +1,13 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelBinarizer
 from sklearn.model_selection import train_test_split
 import keras
 from keras.metrics import Precision, Accuracy, Recall
 from keras.models import Model, Sequential
 from keras.layers import Dense, Dropout, Input, BatchNormalization
+from sklearn.metrics import roc_curve, roc_auc_score, auc, precision_recall_curve, PrecisionRecallDisplay
+import matplotlib.pyplot as plt
 
 
 def extract_horse_cols(df, max_n_horses):
@@ -24,6 +26,19 @@ def extract_odds_cols(df, max_n_horses):
         a = len(df_new.columns)
         df_new.insert(a, 'ValueOdds_BetfairFormat_' + str(i), last_column)
     return df_new
+
+
+def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
+    lb = LabelBinarizer()
+    lb.fit(y_test)
+    y_test = lb.transform(y_test)
+    y_pred = lb.transform(y_pred)
+
+    for (idx, c_label) in enumerate(target):
+        fpr, tpr, thresholds = roc_curve(y_test[:,idx].astype(int), y_pred[:,idx])
+        c_ax.plot(fpr, tpr, label = '%s (AUC:%0.2f)'  % (c_label, auc(fpr, tpr)))
+    c_ax.plot(fpr, fpr, 'b-', label = 'Random Guessing')
+    return roc_auc_score(y_test, y_pred, average=average)
 
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/race_to_row.csv'
 data = pd.read_csv(filename)
@@ -69,9 +84,30 @@ print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
 print("\n%s: %.2f%%" % (model.metrics_names[2], scores[2]*100))
 
 # Predict
-test = X_test[1:2]
-test_res = y_test[1:2]
-
 a = extract_odds_cols(X_test, 14)
 prediction = model.predict(X_test)
-print("prediction shape:", prediction.shape)
+prediction = pd.DataFrame(prediction)
+y_pred = prediction.iloc[:,0]
+
+y_acts = y_test.iloc[:,0]
+# y_pred = prediction.argmax(axis=-1)
+# y_acts = np.asarray(y_test)
+# y_acts = y_acts.argmax(axis=-1)
+
+
+# PR Curve
+fpr_keras, tpr_keras, thresholds_keras = precision_recall_curve(y_acts, y_pred,pos_label=1)
+#auc_keras = auc(fpr_keras, tpr_keras)
+
+#Plot ROC Curves
+plt.figure(1)
+plt.plot([0, 1], [0, 1], 'k--')
+plt.plot(tpr_keras, fpr_keras)
+# , label='Keras (area = {:.3f})'.format(auc_keras)
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('ROC curve')
+plt.legend(loc='best')
+plt.show()
+
+
