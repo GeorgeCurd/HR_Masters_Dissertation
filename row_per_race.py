@@ -12,7 +12,7 @@ class RowPerRaceTransformer:
         self.df = df
         self.max_n_horses = max_n_horses
         self.suffixes = range(1, max_n_horses + 1)
-        self.race_colnames = ['RaceClass', 'Furlongs', 'Prize', 'MinAge', 'MaxAge', 'MeanWeight', 'Runners', 'RaceType_Chase', 'RaceType_Hurdle',
+        self.race_colnames = ['Date', 'RaceClass', 'Furlongs', 'Prize', 'MinAge', 'MaxAge', 'MeanWeight', 'Runners', 'RaceType_Chase', 'RaceType_Hurdle',
              'RaceType_NH Flat', 'Going_FROZEN', 'Going_GD-FM', 'Going_GD-SFT', 'Going_GD-YLD', 'Going_GOOD', 'Going_HEAVY',
              'Going_SFT-HVY', 'Going_SOFT', 'Going_Unknown', 'Going_YIELD', 'Going_YLD-SFT', 'Handicap_Handicap', 'Handicap_Non Handicap',
              'Handicap_Nursery', 'Novice_Non Novice', 'Novice_Novice', 'Maiden_Maiden', 'Maiden_Non Maiden']
@@ -25,8 +25,8 @@ class RowPerRaceTransformer:
             self.transform_race_to_row)
         df_transformed.columns = self.new_colnames
         df_transformed = df_transformed.reset_index().drop(['level_1'], axis=1)
-        df_transformed = self.move_result_cols(df_transformed)
         df_transformed = self.move_horse_cols(df_transformed)
+        df_transformed = self.move_result_cols(df_transformed)
         return df_transformed
 
     def transform_race_to_row(self, df_race, winning_label='1'):
@@ -76,10 +76,9 @@ class RowPerRaceTransformer:
             df.insert(a, 'Horse_' + str(i), last_column)
         return df
 
-a = RowPerRaceTransformer(dp.hr_data_extract,14)
-print('started')
-b = a.transform_full_dataframe()
-print('completed')
-c = b.dtypes
-#c.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/rtr_dtypes.csv')
+# a = RowPerRaceTransformer(dp.hr_data,12)
+# print('started')
+# b = a.transform_full_dataframe()
+# print('completed')
+# b.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/race_to_row.csv')
 # print('Exported')

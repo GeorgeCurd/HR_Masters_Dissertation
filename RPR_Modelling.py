@@ -45,8 +45,8 @@ data = pd.read_csv(filename)
 horse_lookup, data = extract_horse_cols(data, 14)
 X = data[data.columns[:-14]]
 X_names = X.columns
-# ss = StandardScaler()
-# X = pd.DataFrame(ss.fit_transform(X))
+ss = StandardScaler()
+X = pd.DataFrame(ss.fit_transform(X))
 y = data[data.columns[-14:]]
 y_names = y.columns
 
@@ -55,7 +55,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_s
 X_train.set_axis(X_names, axis=1, inplace=True)
 X_test.set_axis(X_names, axis=1, inplace=True)
 y_train.set_axis(y_names, axis=1, inplace=True)
-y_train.set_axis(y_names, axis=1, inplace=True)
+y_test.set_axis(y_names, axis=1, inplace=True)
 
 
 a = len(X.columns)
