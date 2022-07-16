@@ -85,7 +85,7 @@ def order_by_date(df):
     return df
 
 
-def test_train_split_inorder(df, max_horses):
+def train_test_split_inorder(df, max_horses):
     a = len(df.index)
     b = int(a*0.8)
     X = df[df.columns[:-max_horses]]
@@ -97,16 +97,23 @@ def test_train_split_inorder(df, max_horses):
     return X_train, X_test, y_train, y_test
 
 
+def rpr_drop_data(df, max_horses):
+    df2 = df.copy()
+    # Drop cols that aren't to be used for modelling
+    for i in range(1,max_horses+1):
+        df2.pop('BetterClassWinTypeRacesAgo_' + str(i))
+    return df2
+
+# filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB_SHUFFLE.csv'
+# hr_data = pd.read_csv(filename)
+# dtype = hr_data.dtypes
+# dtype.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/dtypes.csv')
+# print(hr_data['Wearing_ht'].unique())
+# hr_data = transform_data(hr_data)
+# hr_data_extract = hr_data.iloc[0:100, :]
 
 
 
-
-
-
-filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB2.csv'
-hr_data = pd.read_csv(filename)
-hr_data = transform_data(hr_data)
-hr_data_extract = hr_data.iloc[0:100, :]
 # hr_data_extract.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/hr_extract.csv')
 # hr_race_data = create_race_data(hr_data)
 # hr_horse_data = create_horse_data(hr_data)

@@ -10,6 +10,9 @@ cols_to_delete = ['Meeting', 'Time', 'Title', 'CardNumber', 'StallNumber', 'Stal
          'LengthsWonLost4RunsAgo', 'BHAclassLast', 'LengthsWonLost3RunsAgo', 'BHAclassToday',
          'LengthsWonLost2RunsAgo',  'LastTimePositionRaceType', 'LengthsWonLostLastRun' ]
 
+cols_to_delete2 = ['Dam_Distance_Run', 'Dam_All_Win', 'BetterClassWeightWinTypeRacesAgo',
+                   'Dam_Age_Run', 'Dam_GoingDistance_Run', 'TJCTypeRuns', 'BetterClassWinTypeRacesAgo']
+
 mv_cols = ['Maiden', 'Novice', 'Wearing', 'Handicap', 'Position5RunsAgo', 'Position4RunsAgo', 'Gender',
             'Position3RunsAgo', 'Position2RunsAgo', 'Prize', 'PositionLastTime', 'Going','GoingLastTime',
            'Going2RunsAgo', 'Going4RunsAgo', 'Going3RunsAgo', 'Going5RunsAgo', ]

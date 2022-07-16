@@ -3,13 +3,13 @@ from tensorflow.keras.layers import Input, Dense, LeakyReLU, BatchNormalization
 from tensorflow.keras.utils import plot_model
 from matplotlib import pyplot
 import numpy as np
-from DataProcessing import test_Y, train_Y, test_normX, train_normX
+from Create_Preds_Runner import
 from keras import Sequential
 from keras.regularizers import l1
 
-
+# def build_autoencoder_model(df):
 # define encoder
-n_inputs = train_normX.shape[1]
+n_inputs = df.shape[1]
 visible = Input(shape=(n_inputs,))
 # encoder level 1
 e = Dense(n_inputs * 2)(visible)
@@ -42,7 +42,7 @@ model = Model(inputs=visible, outputs=output)
 model.compile(optimizer='adam', loss='mse')
 
 # fit the autoencoder model to reconstruct input
-hist = model.fit(train_normX, train_normX, epochs=150, batch_size=16, verbose=2,
+hist = model.fit(train_normX, train_normX, epochs=25, batch_size=16, verbose=2,
                  validation_data=(test_normX, test_normX))
 
 # plot loss
@@ -59,3 +59,4 @@ pyplot.show()
 encoder = Model(inputs=visible, outputs=bottleneck)
 # save the encoder to file
 encoder.save('encoder.h5')
+
