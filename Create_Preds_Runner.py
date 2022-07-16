@@ -25,6 +25,7 @@ max_horses = 12
 # Post RPR Transform
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/race_to_row.csv'
 data = pd.read_csv(filename)
+data.fillna(0, inplace=True)
 data = dp.order_by_date(data)
 X_train, X_test, y_train, y_test = dp.train_test_split_inorder(data, max_horses)
 horse_lookup_train, X_train = dp.extract_horse_cols(X_train, max_horses)
@@ -36,3 +37,13 @@ X_test_norm = dp.rpr_normalise(X_test.iloc[:, 3:])
 X_norm_names = X_test.iloc[:, 3:].columns
 X_train_norm.columns = X_norm_names
 X_test_norm.columns = X_norm_names
+
+# Take Extract for Autoencoder
+a = int(len(X_train_norm.index)/100)
+X_train_norm_ext = X_train_norm.iloc[0:a, :]
+b = int(len(X_test_norm.index)/100)
+X_test_norm_ext = X_test_norm.iloc[0:b, :]
+X_train_norm.isnull().sum().sum()
+
+
+

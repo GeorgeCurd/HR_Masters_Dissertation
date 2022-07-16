@@ -104,6 +104,7 @@ def rpr_drop_data(df, max_horses):
         df2.pop('BetterClassWinTypeRacesAgo_' + str(i))
     return df2
 
+
 # filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/HR_DATA_COMB_SHUFFLE.csv'
 # hr_data = pd.read_csv(filename)
 # dtype = hr_data.dtypes
