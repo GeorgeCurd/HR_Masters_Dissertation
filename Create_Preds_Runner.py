@@ -39,9 +39,9 @@ X_train_norm.columns = X_norm_names
 X_test_norm.columns = X_norm_names
 
 # Take Extract for Autoencoder
-a = int(len(X_train_norm.index)/100)
+a = int(len(X_train_norm.index)/10)
 X_train_norm_ext = X_train_norm.iloc[0:a, :]
-b = int(len(X_test_norm.index)/100)
+b = int(len(X_test_norm.index)/10)
 X_test_norm_ext = X_test_norm.iloc[0:b, :]
 X_train_norm.isnull().sum().sum()
 
