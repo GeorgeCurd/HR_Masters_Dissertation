@@ -51,9 +51,12 @@ X_test_norm.columns = X_norm_names
 encoder = load_model('encoder.h5')
 X_train_encode = encoder.predict(X_train_norm)
 X_test_encode = encoder.predict(X_test_norm)
-X_train_merge = np.column_stack([X_train_norm, X_train_encode])
-X_test_merge = np.column_stack([X_test_norm, X_test_encode])
-print(X_train_merge.shape)
-print(X_test_merge.shape)
-
+X_train_merge = pd.DataFrame(np.column_stack([X_train_norm, X_train_encode]))
+X_test_merge = pd.DataFrame(np.column_stack([X_test_norm, X_test_encode]))
+# Create column names
+X_encode_names = pd.Index(['AE' + str(i) for i in range(X_test_encode.shape[1])])
+X_merge_names = X_norm_names.union(X_encode_names, sort=False)
+X_train_merge.columns = X_merge_names
+X_test_merge.columns = X_merge_names
+print('Complete')
 
