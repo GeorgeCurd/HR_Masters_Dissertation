@@ -97,7 +97,7 @@ y_pred = y_pred.argmax(axis=-1)
 y_acts = np.asarray(y_test)
 y_acts = y_acts.argmax(axis=-1)
 
-target = [1,2,3,4,5,6,7,8,9,10,11,12]
+target = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 fig, c_ax = plt.subplots(1,1, figsize = (12, 8))
 roc_multi = multiclass_roc_auc_score(y_acts, y_pred, average="macro")
 c_ax.legend()

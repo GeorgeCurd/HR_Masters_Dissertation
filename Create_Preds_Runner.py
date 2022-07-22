@@ -47,16 +47,17 @@ X_test_norm.columns = X_norm_names
 # X_train_norm.isnull().sum().sum()
 
 
-# Merge Auto-encoded Cols with Existing Columns
-encoder = load_model('encoder.h5')
-X_train_encode = encoder.predict(X_train_norm)
-X_test_encode = encoder.predict(X_test_norm)
-X_train_merge = pd.DataFrame(np.column_stack([X_train_norm, X_train_encode]))
-X_test_merge = pd.DataFrame(np.column_stack([X_test_norm, X_test_encode]))
-# Create column names
-X_encode_names = pd.Index(['AE' + str(i) for i in range(X_test_encode.shape[1])])
-X_merge_names = X_norm_names.union(X_encode_names, sort=False)
-X_train_merge.columns = X_merge_names
-X_test_merge.columns = X_merge_names
-print('Complete')
-
+# # Merge Auto-encoded Cols with Existing Columns
+# encoder = load_model('encoder.h5')
+# X_train_encode = encoder.predict(X_train_norm)
+# X_test_encode = encoder.predict(X_test_norm)
+# X_train_merge = pd.DataFrame(np.column_stack([X_train_norm, X_train_encode]))
+# X_test_merge = pd.DataFrame(np.column_stack([X_test_norm, X_test_encode]))
+# # Create column names
+# X_encode_names = pd.Index(['AE' + str(i) for i in range(X_test_encode.shape[1])])
+# X_merge_names = X_norm_names.union(X_encode_names, sort=False)
+# X_train_merge.columns = X_merge_names
+# X_test_merge.columns = X_merge_names
+# X_train_merge.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_train_merge.csv')
+# X_test_merge.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_test_merge.csv')
+# print('completed')
