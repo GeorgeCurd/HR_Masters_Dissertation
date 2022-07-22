@@ -6,10 +6,11 @@ import numpy as np
 from Create_Preds_Runner import X_test_norm, X_train_norm
 from keras import Sequential
 from keras.regularizers import l1
+from tensorflow.keras.models import Model, load_model
 
 # def build_autoencoder_model(df):
 # define encoder
-n_inputs = X_train_norm_ext.shape[1]
+n_inputs = X_train_norm.shape[1]
 visible = Input(shape=(n_inputs,))
 # encoder level 1
 e = Dense(n_inputs * 2)(visible)
@@ -59,6 +60,5 @@ pyplot.show()
 
 # Define the encoder model (without decoder)
 encoder = Model(inputs=visible, outputs=bottleneck)
-# save the encoder to file
+# # save the encoder to file
 encoder.save('encoder.h5')
-

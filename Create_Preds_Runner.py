@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import Data_Processing as dp
 import row_per_race as rpr
+from tensorflow.keras.models import Model, load_model
 
 # Set Params
 max_horses = 12
@@ -38,12 +39,21 @@ X_norm_names = X_test.iloc[:, 3:].columns
 X_train_norm.columns = X_norm_names
 X_test_norm.columns = X_norm_names
 
-# Take Extract for Autoencoder
-a = int(len(X_train_norm.index)/10)
-X_train_norm_ext = X_train_norm.iloc[0:a, :]
-b = int(len(X_test_norm.index)/10)
-X_test_norm_ext = X_test_norm.iloc[0:b, :]
-X_train_norm.isnull().sum().sum()
+# # Take Extract for Autoencoder
+# a = int(len(X_train_norm.index)/10)
+# X_train_norm_ext = X_train_norm.iloc[0:a, :]
+# b = int(len(X_test_norm.index)/10)
+# X_test_norm_ext = X_test_norm.iloc[0:b, :]
+# X_train_norm.isnull().sum().sum()
 
+
+# Merge Auto-encoded Cols with Existing Columns
+encoder = load_model('encoder.h5')
+X_train_encode = encoder.predict(X_train_norm)
+X_test_encode = encoder.predict(X_test_norm)
+X_train_merge = np.column_stack([X_train_norm, X_train_encode])
+X_test_merge = np.column_stack([X_test_norm, X_test_encode])
+print(X_train_merge.shape)
+print(X_test_merge.shape)
 
 
