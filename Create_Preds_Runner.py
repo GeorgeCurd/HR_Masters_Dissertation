@@ -33,6 +33,8 @@ horse_lookup_train, X_train = dp.extract_horse_cols(X_train, max_horses)
 horse_lookup_test, X_test = dp.extract_horse_cols(X_test, max_horses)
 odds_lookup_train = dp.rpr_extract_odds_cols(X_train, max_horses)
 odds_lookup_test = dp.rpr_extract_odds_cols(X_test, max_horses)
+prob_lookup_train = dp.rpr_extract_prob_cols(X_train, max_horses)
+prob_lookup_test = dp.rpr_extract_prob_cols(X_test, max_horses)
 X_train_norm = dp.rpr_normalise(X_train.iloc[:, 3:])
 X_test_norm = dp.rpr_normalise(X_test.iloc[:, 3:])
 X_norm_names = X_test.iloc[:, 3:].columns
@@ -65,8 +67,8 @@ X_test_norm.columns = X_norm_names
 # Read in Feature Selection Dataframes
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_train.csv'
 X_important_train = pd.read_csv(filename)
-X_important_train.drop(X_important_train.columns[0], axis=1,inplace=True)
+X_important_train.drop(X_important_train.columns[0], axis=1, inplace=True)
 
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_test.csv'
 X_important_test = pd.read_csv(filename)
-X_important_test.drop(X_important_test.columns[0], axis=1,inplace=True)
+X_important_test.drop(X_important_test.columns[0], axis=1, inplace=True)

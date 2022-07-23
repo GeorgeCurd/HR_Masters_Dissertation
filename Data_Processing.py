@@ -62,6 +62,15 @@ def rpr_extract_odds_cols(df, max_n_horses):
         df_new.insert(a, 'ValueOdds_BetfairFormat_' + str(i), last_column)
     return df_new
 
+def rpr_extract_prob_cols(df, max_n_horses):
+    df_new = pd.DataFrame()
+    df2 = df.copy()
+    for i in range(1, max_n_horses + 1):
+        last_column = df2.pop('ValueOdds_Probability_' + str(i))
+        a = len(df_new.columns)
+        df_new.insert(a, 'ValueOdds_Probability_' + str(i), last_column)
+    return df_new
+
 
 def extract_horse_cols(df, max_n_horses):
     df_new = pd.DataFrame()
