@@ -61,3 +61,12 @@ X_test_norm.columns = X_norm_names
 # X_train_merge.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_train_merge.csv')
 # X_test_merge.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_test_merge.csv')
 # print('completed')
+
+# Read in Feature Selection Datframes
+filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_train.csv'
+X_important_train = pd.read_csv(filename)
+X_important_train.drop(X_important_train.columns[0], axis=1,inplace=True)
+
+filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_test.csv'
+X_important_test = pd.read_csv(filename)
+X_important_test.drop(X_important_test.columns[0], axis=1,inplace=True)
