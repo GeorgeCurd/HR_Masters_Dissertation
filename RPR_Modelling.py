@@ -8,7 +8,8 @@ from keras.models import Model, Sequential
 from keras.layers import Dense, Dropout, Input, BatchNormalization
 from sklearn.metrics import roc_curve, roc_auc_score, auc, precision_recall_curve, PrecisionRecallDisplay
 import matplotlib.pyplot as plt
-from Create_Preds_Runner import X_train_norm, X_test_norm, y_train, y_test, X_important_test, X_important_train
+from Create_Preds_Runner import X_train_norm, X_test_norm, y_train, y_test, X_important_test, X_important_train,\
+    prob_lookup_train, prob_lookup_test, horse_lookup_train, horse_lookup_test, odds_lookup_test, odds_lookup_train
 
 
 def create_rpr_model(X_train, y_train):
@@ -66,10 +67,10 @@ def multiclass_roc_auc_score(curve_type, y_test, y_pred, max_horses, average="ma
     return roc_auc_score(y_test, y_pred, average=average)
 
 
-# Runner
-hist, network = create_rpr_model(X_train_norm, y_train)
-evaluate_model(network, X_test_norm, y_test)
-y_pred = create_predictions(network, X_test_norm)
+# # Runner
+# hist, network = create_rpr_model(X_train_norm, y_train)
+# evaluate_model(network, X_test_norm, y_test)
+# y_pred = create_predictions(network, X_test_norm)
 
 # fig, c_ax = plt.subplots(1, 1, figsize=(12, 8))
 # roc_multi = multiclass_roc_auc_score(roc_curve, y_test, y_pred, 12, average="macro")
@@ -90,5 +91,10 @@ y_pred = create_predictions(network, X_important_test)
 # c_ax.set_ylabel('True Positive Rate')
 # plt.show()
 
-
-
+horse_lookup_test.reset_index(inplace=True)
+odds_lookup_test.reset_index(inplace=True)
+prob_lookup_test.reset_index(inplace=True)
+y_pred.reset_index(inplace=True)
+y_test.reset_index(inplace=True)
+betting_info = pd.concat([horse_lookup_test, odds_lookup_test, prob_lookup_test, y_pred, y_test], axis=1)
+betting_info.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/betting_info.csv')
