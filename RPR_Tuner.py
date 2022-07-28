@@ -28,11 +28,19 @@ def build_model(hp):
 
 print('step1 complete')
 
-tuner = Hyperband(build_model, objective='val_accuracy', factor=2, max_epochs=50)
+tuner = Hyperband(build_model, objective='val_accuracy', factor=2, max_epochs=50, overwrite=True)
 
 print('step2 complete')
 
-tuner.search(X_important_train, y_train, validation_data=(X_important_test, y_test))
+results = tuner.search(X_important_train, y_train, validation_data=(X_important_test, y_test))
 
 print('step3 complete')
 
+best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+
+model = tuner.hypermodel.build(best_hps)
+history = model.fit(X_important_train, y_train, epochs=200, validation_data=(X_important_test, y_test))
+
+val_acc_per_epoch = history.history['val_accuracy']
+best_epoch = val_acc_per_epoch.index(max(val_acc_per_epoch)) + 1
+print('Best epoch: %d' % (best_epoch,))

@@ -10,22 +10,23 @@ from sklearn.metrics import roc_curve, roc_auc_score, auc, precision_recall_curv
 import matplotlib.pyplot as plt
 from Create_Preds_Runner import X_train_norm, X_test_norm, y_train, y_test, X_important_test, X_important_train,\
     prob_lookup_train, prob_lookup_test, horse_lookup_train, horse_lookup_test, odds_lookup_test, odds_lookup_train
-
+import tensorflow as tf
+from Predictions_Import_Runner import X
 
 def create_rpr_model(X_train, y_train):
     a = len(X_train.columns)
 
     # Create Model
     model = Sequential()
-    model.add(Dense(1024, input_dim=a, activation='relu'))
-    model.add(Dropout(rate=0.4))
-    model.add(BatchNormalization(momentum=0.9))
+    model.add(Dense(576, input_dim=a, activation='relu'))
+    model.add(Dropout(rate=0.6))
+    model.add(BatchNormalization(momentum=0.95))
     model.add(Dense(128, activation='relu'))
-    model.add(Dropout(rate=0.5))
+    model.add(Dropout(rate=0.6))
     model.add(Dense(12, activation='softmax'))
 
     # Compile Model
-    model.compile(optimizer='adam', loss='categorical_crossentropy',
+    model.compile(optimizer=tf.optimizers.Adam(learning_rate=0.0005), loss='categorical_crossentropy',
               metrics=['accuracy', 'Precision','Recall'])
 
     # fit the model
@@ -91,10 +92,10 @@ y_pred = create_predictions(network, X_important_test)
 # c_ax.set_ylabel('True Positive Rate')
 # plt.show()
 
-horse_lookup_test.reset_index(inplace=True)
-odds_lookup_test.reset_index(inplace=True)
-prob_lookup_test.reset_index(inplace=True)
-y_pred.reset_index(inplace=True)
-y_test.reset_index(inplace=True)
-betting_info = pd.concat([horse_lookup_test, odds_lookup_test, prob_lookup_test, y_pred, y_test], axis=1)
+horse_lookup_test2 = horse_lookup_test.reset_index(inplace=False)
+odds_lookup_test2 = odds_lookup_test.reset_index(inplace=False)
+prob_lookup_test2 = prob_lookup_test.reset_index(inplace=False)
+y_pred2 = y_pred.reset_index(inplace=False)
+y_test2 = y_test.reset_index(inplace=False)
+betting_info = pd.concat([horse_lookup_test2, odds_lookup_test2, prob_lookup_test2, y_pred2, y_test2], axis=1)
 betting_info.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/betting_info.csv')
