@@ -6,16 +6,18 @@ import Data_Processing as dp
 def create_concatenated_id(df):
     return df.astype(str).apply('_'.join, axis=1)
 
+# 'RaceType_Chase', 'RaceType_Hurdle', 'RaceType_NH Flat', 'Going_FROZEN', 'Going_GD-SFT',  'Going_Unknown', 'Going_YIELD', 'Going_YLD-SFT',
+# 'Handicap_Nursery', , 'Maiden_Maiden',
 
 class RowPerRaceTransformer:
     def __init__(self, df, max_n_horses):
         self.df = df
         self.max_n_horses = max_n_horses
         self.suffixes = range(1, max_n_horses + 1)
-        self.race_colnames = ['Date', 'RaceClass', 'Furlongs', 'Prize', 'MinAge', 'MaxAge', 'MeanWeight', 'Runners', 'RaceType_Chase', 'RaceType_Hurdle',
-             'RaceType_NH Flat', 'Going_FROZEN', 'Going_GD-FM', 'Going_GD-SFT', 'Going_GD-YLD', 'Going_GOOD', 'Going_HEAVY',
-             'Going_SFT-HVY', 'Going_SOFT', 'Going_Unknown', 'Going_YIELD', 'Going_YLD-SFT', 'Handicap_Handicap', 'Handicap_Non Handicap',
-             'Handicap_Nursery', 'Novice_Non Novice', 'Novice_Novice', 'Maiden_Maiden', 'Maiden_Non Maiden']
+        self.race_colnames = ['Date', 'RaceClass', 'Furlongs', 'Prize', 'MinAge', 'MaxAge', 'MeanWeight', 'Runners',
+              'Going_GD-FM',  'Going_GD-YLD', 'Going_GOOD', 'Going_HEAVY',
+             'Going_SFT-HVY', 'Going_SOFT', 'Handicap_Handicap', 'Handicap_Non Handicap',
+              'Novice_Non Novice', 'Novice_Novice',  'Maiden_Non Maiden']
         self.horse_colnames = list(set(df.columns) - set(self.race_colnames))
         self.new_horse_colnames = self.create_new_horse_colnames()
         self.new_colnames = self.race_colnames + self.new_horse_colnames
