@@ -8,14 +8,12 @@ from keras.models import Model, Sequential
 from keras.layers import Dense, Dropout, Input, BatchNormalization
 from sklearn.metrics import roc_curve, roc_auc_score, auc, precision_recall_curve, PrecisionRecallDisplay
 import matplotlib.pyplot as plt
-from Create_Preds_Runner import X_train_norm, X_test_norm, y_train, y_test, X_important_test, X_important_train,\
-    prob_lookup_train, prob_lookup_test, horse_lookup_train, horse_lookup_test, odds_lookup_test, odds_lookup_train
+# from Create_Preds_Runner import X_train_norm, X_test_norm, y_train, y_test, X_important_test, X_important_train,\
+#     prob_lookup_train, prob_lookup_test, horse_lookup_train, horse_lookup_test, odds_lookup_test, odds_lookup_train
 import tensorflow as tf
-from Predictions_Import_Runner import X
 
 def create_rpr_model(X_train, y_train):
     a = len(X_train.columns)
-
     # Create Model
     model = Sequential()
     model.add(Dense(576, input_dim=a, activation='relu'))
@@ -30,8 +28,8 @@ def create_rpr_model(X_train, y_train):
               metrics=['accuracy', 'Precision','Recall'])
 
     # fit the model
-    hist = model.fit(X_train, y_train, epochs=25, batch_size=50, shuffle=False)
-    return hist, model
+    hist = model.fit(X_train, y_train, epochs=1, batch_size=50, shuffle=False)
+    return model
 
 
 def evaluate_model(model, X_test, y_test):
@@ -81,9 +79,9 @@ def multiclass_roc_auc_score(curve_type, y_test, y_pred, max_horses, average="ma
 # plt.show()
 
 
-hist, network = create_rpr_model(X_important_train, y_train)
-evaluate_model(network, X_important_test, y_test)
-y_pred = create_predictions(network, X_important_test)
+# network = create_rpr_model(X_important_train, y_train)
+# evaluate_model(network, X_important_test, y_test)
+# y_pred = create_predictions(network, X_important_test)
 
 # fig, c_ax = plt.subplots(1, 1, figsize=(12, 8))
 # roc_multi = multiclass_roc_auc_score(roc_curve, y_test, y_pred, 12, average="macro")
@@ -92,10 +90,10 @@ y_pred = create_predictions(network, X_important_test)
 # c_ax.set_ylabel('True Positive Rate')
 # plt.show()
 
-horse_lookup_test2 = horse_lookup_test.reset_index(inplace=False)
-odds_lookup_test2 = odds_lookup_test.reset_index(inplace=False)
-prob_lookup_test2 = prob_lookup_test.reset_index(inplace=False)
-y_pred2 = y_pred.reset_index(inplace=False)
-y_test2 = y_test.reset_index(inplace=False)
-betting_info = pd.concat([horse_lookup_test2, odds_lookup_test2, prob_lookup_test2, y_pred2, y_test2], axis=1)
-betting_info.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/betting_info.csv')
+# horse_lookup_test2 = horse_lookup_test.reset_index(inplace=False, drop=True)
+# odds_lookup_test2 = odds_lookup_test.reset_index(inplace=False, drop=True)
+# prob_lookup_test2 = prob_lookup_test.reset_index(inplace=False, drop=True)
+# y_pred2 = y_pred.reset_index(inplace=False, drop=True)
+# y_test2 = y_test.reset_index(inplace=False, drop=True)
+# betting_info = pd.concat([horse_lookup_test2, odds_lookup_test2, prob_lookup_test2, y_pred2, y_test2], axis=1)
+# betting_info.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/betting_info.csv')

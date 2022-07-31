@@ -10,18 +10,6 @@ cols_to_delete = ['Meeting', 'Time', 'Title', 'CardNumber', 'StallNumber', 'Stal
          'LengthsWonLost4RunsAgo', 'BHAclassLast', 'LengthsWonLost3RunsAgo', 'BHAclassToday',
          'LengthsWonLost2RunsAgo',  'LastTimePositionRaceType', 'LengthsWonLostLastRun' ]
 
-cols_to_delete_preds = ['Meeting', 'Time', 'Title', 'CardNumber', 'StallNumber', 'StallPercentage', 'Weight_StonesPounds',
-         'Jockey', 'Trainer', 'Alarms', 'ClassPosition', 'WinClassProbability', 'WinClassProbability_Normalised',
-         'ValueOdds', 'ForecastSP', 'CSVversion', 'ElapsedDays', 'Systems', 'Time24Hour', 'BST_GMT',
-         'HorseForm', 'ConnRanking', 'FrmRanking', 'LstRanking', 'ClsRanking', 'WinFRanking', 'SpdRanking', 'HCPRanking',
-         'Country', 'RGoingRanking', 'RDistanceRanking', 'UKHRCardHorseID', 'UKHRCardTrainerID', 'UKHRCardJockeyID',
-         'UKHRCardCourseID', 'Sire', 'UKHR_SireID', 'Dam', 'UKHR_DamID', 'Betfair Placed', 'Betfair Place S.P.', 'Betfair Win S.P.',
-         'Actual Going', 'S.P.', 'Actual Runners', 'WRITE_IN_DURATION_HERE', 'UKHR_EntryID', 'UKHR_HorseID',
-         'UKHR_TrainerID', 'UKHR_JockeyID', 'UKHR_CourseID', 'LengthsBehind', 'LengthsBehindTotal', 'Duration',
-         'WRITE_FAVOURITE_RANKING', 'Claiming', 'Selling', 'Auction', 'HunterChase', 'Beginner', 'LengthsWonLost5RunsAgo', 'BHAclassLastType',
-         'LengthsWonLost4RunsAgo', 'BHAclassLast', 'LengthsWonLost3RunsAgo', 'BHAclassToday',
-         'LengthsWonLost2RunsAgo',  'LastTimePositionRaceType', 'LengthsWonLostLastRun' ]
-
 cols_to_delete2 = ['Dam_Distance_Run', 'Dam_All_Win', 'BetterClassWeightWinTypeRacesAgo',
                    'Dam_Age_Run', 'Dam_GoingDistance_Run', 'TJCTypeRuns', 'BetterClassWinTypeRacesAgo']
 

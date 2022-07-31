@@ -8,15 +8,19 @@ import tensorflow as tf
 def build_model(hp):
 
     # Create Model
-    hp_dropout = hp.Float('dropout', min_value=0.0, max_value=0.9, step=0.1)
-    hp_momentum = hp.Float('momentum', min_value=0.5, max_value=1.0, step=0.05)
-    hp_units = hp.Int('units', min_value=32, max_value=4096, step=32)
+    hp_dropout1 = hp.Float('dropout1', min_value=0.0, max_value=0.9, step=0.1)
+    hp_momentum1 = hp.Float('momentum1', min_value=0.5, max_value=1.0, step=0.05)
+    hp_units1 = hp.Int('units1', min_value=32, max_value=2048, step=32)
+    hp_dropout2 = hp.Float('dropout2', min_value=0.0, max_value=0.9, step=0.1)
+    hp_momentum2 = hp.Float('momentum2', min_value=0.5, max_value=1.0, step=0.05)
+    hp_units2 = hp.Int('units2', min_value=32, max_value=2048, step=32)
     model = Sequential()
-    model.add(Dense(units=hp_units, input_dim=1351, activation='relu'))
-    model.add(Dropout(rate=hp_dropout))
-    model.add(BatchNormalization(momentum=hp_momentum))
-    model.add(Dense(units=hp_units, activation='relu'))
-    model.add(Dropout(rate=hp_dropout))
+    model.add(Dense(units=hp_units1, input_dim=1351, activation='relu'))
+    model.add(Dropout(rate=hp_dropout1))
+    model.add(BatchNormalization(momentum=hp_momentum1))
+    model.add(Dense(units=hp_units2, activation='relu'))
+    model.add(Dropout(rate=hp_dropout2))
+    model.add(BatchNormalization(momentum=hp_momentum2))
     model.add(Dense(12, activation='softmax'))
 
     # Compile Model
@@ -28,7 +32,7 @@ def build_model(hp):
 
 print('step1 complete')
 
-tuner = Hyperband(build_model, objective='val_accuracy', factor=2, max_epochs=50, overwrite=True)
+tuner = Hyperband(build_model, objective='val_accuracy', factor=3, max_epochs=50, overwrite=True)
 
 print('step2 complete')
 
@@ -38,9 +42,13 @@ print('step3 complete')
 
 best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
 
+best_model_count = 10
+best = tuner.results_summary(num_trials=best_model_count)
+
 model = tuner.hypermodel.build(best_hps)
 history = model.fit(X_important_train, y_train, epochs=200, validation_data=(X_important_test, y_test))
 
 val_acc_per_epoch = history.history['val_accuracy']
 best_epoch = val_acc_per_epoch.index(max(val_acc_per_epoch)) + 1
 print('Best epoch: %d' % (best_epoch,))
+

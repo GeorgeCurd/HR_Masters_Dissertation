@@ -60,7 +60,7 @@ X_test_norm.columns = X_norm_names
 # X_merge_names = X_norm_names.union(X_encode_names, sort=False)
 # X_train_merge.columns = X_merge_names
 # X_test_merge.columns = X_merge_names
-# X_train_merge.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_train_merge.csv')
+# X_train_norm.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_train_norm.csv')
 # X_test_merge.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_test_merge.csv')
 # print('completed')
 
@@ -72,3 +72,15 @@ X_important_train.drop(X_important_train.columns[0], axis=1, inplace=True)
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_test.csv'
 X_important_test = pd.read_csv(filename)
 X_important_test.drop(X_important_test.columns[0], axis=1, inplace=True)
+
+# Create datasets for Backtester
+X_important = X_important_train.append(X_important_test, ignore_index=True)
+dates = data.pop('Date')
+dates.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/dates.csv', index=False)
+X_important.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_important.csv', index=False)
+y_full = y_train.append(y_test, ignore_index=True)
+y_full.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/y_full.csv', index=False)
+odds_lookup = odds_lookup_train.append(odds_lookup_test, ignore_index=True)
+odds_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/odds_lookup.csv', index=False)
+prob_lookup = prob_lookup_train.append(prob_lookup_test, ignore_index=True)
+prob_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/prob_lookup.csv', index=False)
