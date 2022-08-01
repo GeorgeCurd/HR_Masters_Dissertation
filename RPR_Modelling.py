@@ -9,7 +9,7 @@ from keras.layers import Dense, Dropout, Input, BatchNormalization
 from sklearn.metrics import roc_curve, roc_auc_score, auc, precision_recall_curve, PrecisionRecallDisplay
 import matplotlib.pyplot as plt
 # from Create_Preds_Runner import X_train_norm, X_test_norm, y_train, y_test, X_important_test, X_important_train,\
-#     prob_lookup_train, prob_lookup_test, horse_lookup_train, horse_lookup_test, odds_lookup_test, odds_lookup_train
+#      prob_lookup_train, prob_lookup_test, horse_lookup_train, horse_lookup_test, odds_lookup_test, odds_lookup_train
 import tensorflow as tf
 
 def create_rpr_model(X_train, y_train):
@@ -67,7 +67,7 @@ def multiclass_roc_auc_score(curve_type, y_test, y_pred, max_horses, average="ma
 
 
 # # Runner
-# hist, network = create_rpr_model(X_train_norm, y_train)
+# network = create_rpr_model(X_train_norm, y_train)
 # evaluate_model(network, X_test_norm, y_test)
 # y_pred = create_predictions(network, X_test_norm)
 
