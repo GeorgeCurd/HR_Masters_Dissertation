@@ -12,10 +12,10 @@ class Backtesting:
     def __init__(self, race_data, result_data, odds_lookup, probs_lookup, horse_lookup, dates, create_model, start_train, end_train,
                  end_test, starting_bal):
         self.race_data = race_data
-        self.result_data = result_data
-        self.odds_lookup = odds_lookup
-        self.probs_lookup = probs_lookup
-        self.horse_lookup = horse_lookup
+        self.result_data = np.asarray(result_data)
+        self.odds_lookup = np.asarray(odds_lookup)
+        self.probs_lookup = np.asarray(probs_lookup)
+        self.horse_lookup = np.asarray(horse_lookup)
         self.dates = dates
         self.dates['Date'] = pd.to_datetime(dates['Date'])
         self.start_train = datetime.strptime(start_train, '%Y-%m-%d')
@@ -56,11 +56,20 @@ class Backtesting:
 
         return preds_df
 
-    def bet_on_best(self, preds):
-        # max_prob = preds.max(axis=1)
-        max_prob_idx = preds.idxmax(axis=1)
-        horse_names = [self.horse_lookup[i] for i in max_prob_idx]
-        return horse_names
+    def bet_on_best(self, preds, dt):
+        output = pd.DataFrame()
+        preds = np.asarray(preds)
+        max_prob = preds.max(axis=1)
+        max_prob_idx = np.argmax(preds, axis=1)
+        horse_names = np.take_along_axis(self.horse_lookup, max_prob_idx[:,None], axis=1)
+        odds_names = np.take_along_axis(self.odds_lookup, max_prob_idx[:, None], axis=1)
+        result = np.take_along_axis(self.result_data, max_prob_idx[:, None], axis=1)
+        output['horse_names'] = pd.Series(horse_names[:, 0])
+        output['odds_names'] = pd.Series(odds_names[:, 0])
+        output['actual_result'] = pd.Series(result[:, 0])
+
+
+        return output
 
 
 filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important.csv'
@@ -88,12 +97,17 @@ backtester = Backtesting(X_important, y_full, odd_lookup, prob_lookup, horse_loo
 # testing = backtester.daily_model_preds()
 
 def bet_on_best(preds, horse_lookup):
+    output = pd.DataFrame()
     preds = np.asarray(preds)
     horse_lookup = np.asarray(horse_lookup)
+    odds = np.asarray(odd_lookup)
     max_prob = np.max(preds, axis=1)
     max_prob_idx = np.argmax(preds, axis=1)
     horse_names = np.take_along_axis(horse_lookup, max_prob_idx[:,None], axis=1)
-    return max_prob_idx, horse_names
+    odds_max = np.take_along_axis(odds, max_prob_idx[:, None], axis=1)
+    output['horse_names'] = pd.Series(horse_names[:,0])
+    output['odds_names'] = pd.Series(odds_max[:,0])
+    return output
 
-idx,horses = bet_on_best(y_full,horse_lookup)
+output = bet_on_best(y_full,horse_lookup)
 print('done')

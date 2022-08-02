@@ -80,6 +80,14 @@ def extract_horse_cols(df, max_n_horses):
         df_new.insert(a, 'Horse_' + str(i), last_column)
     return df_new, df
 
+def rpr_extract_raceid_cols(df):
+    df_new = pd.DataFrame()
+    df2 = df.copy()
+    for i in range(1, max_n_horses + 1):
+        col = df2.pop('UKHR_RaceID')
+        df_new.insert(0, 'UKHR_RaceID', col)
+    return df_new
+
 
 def rpr_normalise(df):
     ss = StandardScaler()

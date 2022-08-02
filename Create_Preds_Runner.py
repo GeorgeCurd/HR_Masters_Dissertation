@@ -35,6 +35,7 @@ odds_lookup_train = dp.rpr_extract_odds_cols(X_train, max_horses)
 odds_lookup_test = dp.rpr_extract_odds_cols(X_test, max_horses)
 prob_lookup_train = dp.rpr_extract_prob_cols(X_train, max_horses)
 prob_lookup_test = dp.rpr_extract_prob_cols(X_test, max_horses)
+race_lookup_train = rpr_extract_raceid_cols(X_train)
 X_train_norm = dp.rpr_normalise(X_train.iloc[:, 3:])
 X_test_norm = dp.rpr_normalise(X_test.iloc[:, 3:])
 X_norm_names = X_test.iloc[:, 3:].columns
