@@ -28,7 +28,7 @@ def create_rpr_model(X_train, y_train):
               metrics=['accuracy', 'Precision','Recall'])
 
     # fit the model
-    hist = model.fit(X_train, y_train, epochs=1, batch_size=50, shuffle=False)
+    hist = model.fit(X_train, y_train, epochs=25, batch_size=50, shuffle=False)
     return model
 
 

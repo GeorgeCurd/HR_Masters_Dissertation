@@ -87,7 +87,8 @@ class Backtesting:
         output['actual_result'] = pd.Series(result[:, 0])
         mb = np.asarray([size_bet for i in range(len(output.index))])
         output['money_bet'] = pd.Series(mb)
-        # output['return'] = pd.Series(ret)
+        values = (output.money_bet * output.odds)-size_bet
+        output['return'] = values.where(output.actual_result == 1, other=-size_bet)
         return output
 
 
@@ -101,7 +102,6 @@ class Backtesting:
         else:
             print('Error: Strategy type must be FS, FP or Kelly')
         return stake_per_bet
-
 
     def calc_balance(self):
         a = []
@@ -137,21 +137,5 @@ backtester = Backtesting(X_important, y_full, odd_lookup, prob_lookup, horse_loo
                          rpr_mod.create_rpr_model, '2015-01-01', '2017-12-31', '2022-05-31', 1000, 'FS', 1)
 
 testing = backtester.daily_model_preds()
-
-# def bet_on_best(preds, horse_lookup):
-#     output = pd.DataFrame()
-#     preds = np.asarray(preds)
-#     horse_lookup = np.asarray(horse_lookup)
-#     odds = np.asarray(odd_lookup)
-#     max_prob = np.max(preds, axis=1)
-#     max_prob_idx = np.argmax(preds, axis=1)
-#     horse_names = np.take_along_axis(horse_lookup, max_prob_idx[:,None], axis=1)
-#     odds_max = np.take_along_axis(odds, max_prob_idx[:, None], axis=1)
-#     output['horse_names'] = pd.Series(horse_names[:,0])
-#     output['odds_names'] = pd.Series(odds_max[:,0])
-#     return output
-#
-# output = bet_on_best(y_full,horse_lookup)
-# print('done')
-
+testing.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/mth_res_jan18.csv', index=False)
 
