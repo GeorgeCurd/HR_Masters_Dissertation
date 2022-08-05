@@ -35,7 +35,7 @@ class Backtesting:
         X_train = self.race_data.loc[mask]
         y_train = self.result_data.loc[mask]
         model = self.create_model(X_train, y_train)
-        print('initial model built')
+        print('model built for dates ' + str(self.start_train) + 'and ' + str(self.end_train))
         return model
 
 
@@ -59,10 +59,11 @@ class Backtesting:
                 spb = self.bet_strategy()
                 a = self.bet_on_best(preds, mth_start, spb)
                 self.daily_bet_results = self.daily_bet_results.append(a, ignore_index=True)
+                self.balance_update(mth_start)
                 print('complete for day ' + str(mth_start))
                 mth_start = mth_start + timedelta(days=1)
-
-        return self.daily_bet_results
+            self.end_train = mth_end
+            self.current_date = mth_end + timedelta(days=1)
 
     def bet_on_best(self, preds, dt, size_bet):
         """ Function for compiling daily bets and results """
@@ -103,10 +104,14 @@ class Backtesting:
             print('Error: Strategy type must be FS, FP or Kelly')
         return stake_per_bet
 
-    def calc_balance(self):
-        a = []
-        self.current_balance = self.starting_bal
+    def balance_update(self, dt):
+        a = self.daily_bet_results[self.daily_bet_results["date"] == dt].sum()["return"]
+        self.current_balance = self.current_balance + a
 
+    def full_backtest(self):
+        while self.current_date <= self.end_test:
+            self.daily_model_preds()
+        return self.daily_bet_results
 
 
 
@@ -136,6 +141,6 @@ dates['Date'] = pd.to_datetime(dates['Date'])
 backtester = Backtesting(X_important, y_full, odd_lookup, prob_lookup, horse_lookup, race_lookup, dates,
                          rpr_mod.create_rpr_model, '2015-01-01', '2017-12-31', '2022-05-31', 1000, 'FS', 1)
 
-testing = backtester.daily_model_preds()
-testing.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/mth_res_jan18.csv', index=False)
+testing = backtester.full_backtest()
+
 
