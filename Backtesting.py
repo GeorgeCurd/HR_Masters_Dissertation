@@ -142,5 +142,5 @@ backtester = Backtesting(X_important, y_full, odd_lookup, prob_lookup, horse_loo
                          rpr_mod.create_rpr_model, '2015-01-01', '2017-12-31', '2022-05-31', 1000, 'FS', 1)
 
 testing = backtester.full_backtest()
-
+# testing.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/backtest_results.csv')
 
