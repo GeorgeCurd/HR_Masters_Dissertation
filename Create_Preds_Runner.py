@@ -43,12 +43,12 @@ X_norm_names = X_test.iloc[:, 3:].columns
 X_train_norm.columns = X_norm_names
 X_test_norm.columns = X_norm_names
 
-# Take Extract for Autoencoder
-a = int(len(X_train_norm.index)/10)
-X_train_norm_ext = X_train_norm.iloc[0:a, :]
-b = int(len(X_test_norm.index)/10)
-X_test_norm_ext = X_test_norm.iloc[0:b, :]
-X_train_norm.isnull().sum().sum()
+# # Take Extract for Autoencoder
+# a = int(len(X_train_norm.index)/10)
+# X_train_norm_ext = X_train_norm.iloc[0:a, :]
+# b = int(len(X_test_norm.index)/10)
+# X_test_norm_ext = X_test_norm.iloc[0:b, :]
+# X_train_norm.isnull().sum().sum()
 
 
 # # Merge Auto-encoded Cols with Existing Columns
@@ -66,27 +66,27 @@ X_train_norm.isnull().sum().sum()
 # X_test_merge.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_test_merge.csv')
 # print('completed')
 
-# Read in Feature Selection Dataframes
-filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_train.csv'
-X_important_train = pd.read_csv(filename)
-X_important_train.drop(X_important_train.columns[0], axis=1, inplace=True)
-
-filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_test.csv'
-X_important_test = pd.read_csv(filename)
-X_important_test.drop(X_important_test.columns[0], axis=1, inplace=True)
-
-# Create datasets for Backtester
-X_important = X_important_train.append(X_important_test, ignore_index=True)
-dates = data.pop('Date')
-dates.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/dates.csv', index=False)
-X_important.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_important.csv', index=False)
-y_full = y_train.append(y_test, ignore_index=True)
-y_full.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/y_full.csv', index=False)
-odds_lookup = odds_lookup_train.append(odds_lookup_test, ignore_index=True)
-odds_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/odds_lookup.csv', index=False)
-prob_lookup = prob_lookup_train.append(prob_lookup_test, ignore_index=True)
-prob_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/prob_lookup.csv', index=False)
-horse_lookup = horse_lookup_train.append(horse_lookup_test, ignore_index=True)
-horse_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/horse_lookup.csv', index=False)
-race_lookup = race_lookup_train.append(race_lookup_test, ignore_index=True)
-race_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/race_lookup.csv', index=False)
+# # Read in Feature Selection Dataframes
+# filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_train.csv'
+# X_important_train = pd.read_csv(filename)
+# X_important_train.drop(X_important_train.columns[0], axis=1, inplace=True)
+#
+# filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_important_test.csv'
+# X_important_test = pd.read_csv(filename)
+# X_important_test.drop(X_important_test.columns[0], axis=1, inplace=True)
+#
+# # Create datasets for Backtester
+# X_important = X_important_train.append(X_important_test, ignore_index=True)
+# dates = data.pop('Date')
+# dates.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/dates.csv', index=False)
+# X_important.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_important.csv', index=False)
+# y_full = y_train.append(y_test, ignore_index=True)
+# y_full.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/y_full.csv', index=False)
+# odds_lookup = odds_lookup_train.append(odds_lookup_test, ignore_index=True)
+# odds_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/odds_lookup.csv', index=False)
+# prob_lookup = prob_lookup_train.append(prob_lookup_test, ignore_index=True)
+# prob_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/prob_lookup.csv', index=False)
+# horse_lookup = horse_lookup_train.append(horse_lookup_test, ignore_index=True)
+# horse_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/horse_lookup.csv', index=False)
+# race_lookup = race_lookup_train.append(race_lookup_test, ignore_index=True)
+# race_lookup.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/race_lookup.csv', index=False)

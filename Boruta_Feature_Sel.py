@@ -57,6 +57,13 @@ filename = 'C:/Users/e1187273/Pictures/Horse Racing Data/X_test_merge.csv'
 X_test_merge = pd.read_csv(filename)
 print('complete import')
 
+# Run BFS and Return Results
+create_and_test_RF_model(X_train_merge, X_test_merge, y_train, y_test, random_state, n_estimators,depth)
+sel, feats = create_boruta_selector_and_rank(X_train_merge, y_train, random_state, n_ests=n_estimators, depth=depth, perc=50)
+X_important_train, X_important_test = return_selected_features(sel, X_train_merge, X_test_merge)
+
+
+
 # X_important_train.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_important_train.csv')
 # X_important_test.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/X_important_test.csv')
 # print('Complete')
