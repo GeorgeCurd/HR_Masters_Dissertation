@@ -4,6 +4,7 @@ import RPR_Modelling as rpr_mod
 from datetime import date, timedelta
 from datetime import datetime
 import calendar
+import math
 
 
 class Backtesting:
@@ -57,7 +58,7 @@ class Backtesting:
             else:
                 preds = rpr_mod.create_predictions(model, X_test)
                 spb = self.bet_strategy()
-                a = self.bet_on_best(preds, mth_start, spb)
+                a = self.bet_on_value(preds, mth_start, spb)
                 self.daily_bet_results = self.daily_bet_results.append(a, ignore_index=True)
                 self.balance_update(mth_start)
                 print('complete for day ' + str(mth_start))
@@ -92,6 +93,56 @@ class Backtesting:
         output['return'] = values.where(output.actual_result == 1, other=-size_bet)
         return output
 
+    def bet_on_value(self, preds, dt, size_bet):
+        """ Function for compiling daily bets and results """
+        mask = (self.dates['Date'] == dt)
+        hl = np.asarray(self.horse_lookup.loc[mask])
+        ol = np.asarray(self.odds_lookup.loc[mask])
+        rd = np.asarray(self.result_data.loc[mask])
+        rl = np.asarray(self.race_lookup.loc[mask])
+        output = pd.DataFrame()
+        preds = np.asarray(preds)
+        odds_prob = 1/ol
+        odds_prob[np.isinf(odds_prob)] = 1
+        diff = np.subtract(preds,odds_prob)
+        max_prob = diff.max(axis=1)
+        max_prob_idx = np.argmax(diff, axis=1)
+        horse_names = np.take_along_axis(hl, max_prob_idx[:,None], axis=1)
+        odds = np.take_along_axis(ol, max_prob_idx[:, None], axis=1)
+        model_prob2 = np.take_along_axis(preds, max_prob_idx[:, None], axis=1)
+        odds_prob2 = np.take_along_axis(odds_prob, max_prob_idx[:, None], axis=1)
+        result = np.take_along_axis(rd, max_prob_idx[:, None], axis=1)
+        output['race_ID'] = pd.Series(rl[:, 0])
+        day = np.asarray([dt for i in range(len(output.index))])
+        output['date'] = pd.Series(day)
+        output['horse_names'] = pd.Series(horse_names[:, 0])
+        output['model_prob'] = pd.Series(model_prob2[:, 0])
+        output['odds'] = pd.Series(odds[:, 0])
+        output['odds_prob'] = pd.Series(odds_prob2[:, 0])
+        output['diff'] = pd.Series(max_prob)
+        output['actual_result'] = pd.Series(result[:, 0])
+        if size_bet != 'Kelly':
+            mb = np.asarray([size_bet for i in range(len(output.index))])
+            output['money_bet'] = pd.Series(mb)
+            values = (output.money_bet * output.odds)-size_bet
+            output['return'] = values.where(output.actual_result == 1, other=-size_bet)
+        else:
+            mbk = []
+            for i in range(len(output.index)):
+                f = ((((output.odds[i]-1)*output.model_prob[i])-(1-output.model_prob[i]))/(output.odds[i]-1)*self.current_balance)/100
+                if f<0:
+                    mbk.append(0)
+                elif math.isinf(f):
+                    mbk.append(self.current_balance/100)
+
+                else:
+                    mbk.append(f)
+            output['money_bet'] = pd.Series(mbk)
+            values = (output.money_bet * output.odds) - output.money_bet
+            output['return'] = values.where(output.actual_result == 1, other=-output.money_bet)
+
+        return output
+
 
     def bet_strategy(self):
         if self.strategy_type =='FS':
@@ -99,7 +150,7 @@ class Backtesting:
         elif self.strategy_type == 'FP':
             stake_per_bet = self.current_balance/self.strategy_size
         elif self.strategy_type == 'Kelly':
-            print('Add Kelly')
+            stake_per_bet = 'Kelly'
         else:
             print('Error: Strategy type must be FS, FP or Kelly')
         return stake_per_bet
@@ -139,8 +190,8 @@ dates = pd.read_csv(filename)
 dates['Date'] = pd.to_datetime(dates['Date'])
 
 backtester = Backtesting(X_important, y_full, odd_lookup, prob_lookup, horse_lookup, race_lookup, dates,
-                         rpr_mod.create_rpr_model, '2015-01-01', '2017-12-31', '2022-05-31', 1000, 'FS', 1)
+                         rpr_mod.create_rpr_model, '2015-01-01', '2017-12-31', '2022-05-31', 1000, 'Kelly', 1000)
 
 testing = backtester.full_backtest()
-# testing.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/backtest_results.csv')
-
+testing.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/backtest_results_raw.csv')
+print('Exported')
