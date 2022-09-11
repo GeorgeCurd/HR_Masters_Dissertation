@@ -58,7 +58,7 @@ class Backtesting:
             else:
                 preds = rpr_mod.create_predictions(model, X_test)
                 spb = self.bet_strategy()
-                a = self.bet_on_value(preds, mth_start, spb)
+                a = self.bet_on_threshold(preds, mth_start, spb)
                 self.daily_bet_results = self.daily_bet_results.append(a, ignore_index=True)
                 self.balance_update(mth_start)
                 print('complete for day ' + str(mth_start))
@@ -93,6 +93,29 @@ class Backtesting:
         output['return'] = values.where(output.actual_result == 1, other=-size_bet)
         return output
 
+    def bet_on_threshold(self, preds, dt, size_bet):
+        """ Function for compiling daily bets and results """
+        mask = (self.dates['Date'] == dt)
+        hl = np.asarray(self.horse_lookup.loc[mask]).flatten()
+        ol = np.asarray(self.odds_lookup.loc[mask]).flatten()
+        rd = np.asarray(self.result_data.loc[mask]).flatten()
+        rl = np.repeat(np.asarray(self.race_lookup.loc[mask]).flatten(), 12)
+        output = pd.DataFrame()
+        preds = np.asarray(preds).flatten()
+        boolArr = preds >= 0.15
+        output['race_ID'] = pd.Series(rl[boolArr])
+        day = np.asarray([dt for i in range(len(output.index))])
+        output['date'] = pd.Series(day)
+        output['horse_names'] = pd.Series(hl[boolArr])
+        output['model_prob'] = pd.Series(preds[boolArr])
+        output['odds'] = pd.Series(ol[boolArr])
+        output['actual_result'] = pd.Series(rd[boolArr])
+        mb = np.asarray([size_bet for i in range(len(output.index))])
+        output['money_bet'] = pd.Series(mb)
+        values = (output.money_bet * output.odds)-size_bet
+        output['return'] = values.where(output.actual_result == 1, other=-size_bet)
+        return output
+
     def bet_on_value(self, preds, dt, size_bet):
         """ Function for compiling daily bets and results """
         mask = (self.dates['Date'] == dt)
@@ -104,7 +127,7 @@ class Backtesting:
         preds = np.asarray(preds)
         odds_prob = 1/ol
         odds_prob[np.isinf(odds_prob)] = 1
-        diff = np.subtract(preds,odds_prob)
+        diff = np.subtract(preds, odds_prob)
         max_prob = diff.max(axis=1)
         max_prob_idx = np.argmax(diff, axis=1)
         horse_names = np.take_along_axis(hl, max_prob_idx[:,None], axis=1)
@@ -190,7 +213,7 @@ dates = pd.read_csv(filename)
 dates['Date'] = pd.to_datetime(dates['Date'])
 
 backtester = Backtesting(X_important, y_full, odd_lookup, prob_lookup, horse_lookup, race_lookup, dates,
-                         rpr_mod.create_rpr_model, '2015-01-01', '2017-12-31', '2022-05-31', 1000, 'Kelly', 1000)
+                         rpr_mod.create_rpr_model, '2015-01-01', '2017-12-31', '2022-05-31', 1000, 'FP', 1000)
 
 testing = backtester.full_backtest()
 testing.to_csv('C:/Users/e1187273/Pictures/Horse Racing Data/backtest_results_raw.csv')

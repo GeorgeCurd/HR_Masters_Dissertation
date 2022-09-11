@@ -19,12 +19,12 @@ def create_rpr_model(X_train, y_train):
     a = len(X_train.columns)
     # Create Model
     model = Sequential()
-    model.add(Dense(864, input_dim=a, activation='relu'))
-    model.add(Dropout(rate=0.2))
-    model.add(BatchNormalization(momentum=0.75))
+    model.add(Dense(160, input_dim=a, activation='relu'))
+    model.add(Dropout(rate=0.6))
+    model.add(BatchNormalization(momentum=0.8))
     model.add(Dense(192, activation='relu'))
-    model.add(Dropout(rate=0.7))
-    model.add(BatchNormalization(momentum=0.6))
+    model.add(Dropout(rate=0.5))
+    model.add(BatchNormalization(momentum=0.55))
     model.add(Dense(12, activation='softmax'))
 
     # Compile Model
@@ -32,7 +32,7 @@ def create_rpr_model(X_train, y_train):
               metrics=['accuracy', 'Precision', 'Recall'])
 
     # fit the model
-    hist = model.fit(X_train, y_train, epochs=5, batch_size=50, shuffle=False)
+    hist = model.fit(X_train, y_train, epochs=8, batch_size=50, shuffle=False)
     return model
 
 
